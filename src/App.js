@@ -8,9 +8,6 @@ import SearchBar from "./component/searchBar";
 function App() {
   const [page, setPage] = useState("planets");
   const [search, setSearch] = useState("");
-  const [input, setInput] = useState({
-    buscar: "",
-  });
 
   const handleChange = (e) => {
     setSearch(e.target.value);
