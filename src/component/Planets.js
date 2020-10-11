@@ -5,19 +5,22 @@ import { ReactQueryDevtools } from "react-query-devtools";
 // import { fetchPlanets } from "../helpers/FetchPlanets";
 import Planet from "./Planet";
 
-export const fetchPlanets = async (key, page) => {
-  const res = await fetch(`http://swapi.dev/api/${key}/?page=${page}`);
+export const fetchPlanets = async (key, page, planeta) => {
+  const res = await fetch(
+    `http://swapi.dev/api/${key}/?page=${page}&&search=${planeta}`
+  );
   return res.json();
 };
 
-export default function Planets() {
+export default function Planets({ planeta }) {
   const [page, setPage] = useState(1); //creo state para manejar las paginas
+
   //useQuery
   //const recibe la data y el estado(loading, success o error)
   //useQuery recibe
   //   const { data, status } = useQuery(["planets", page], fetchPlanets, {
   const { resolvedData, latestData, status } = usePaginatedQuery(
-    ["planets", page],
+    ["planets", page, planeta],
     fetchPlanets,
     {
       staleTime: 0,

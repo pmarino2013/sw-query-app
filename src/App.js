@@ -3,15 +3,39 @@ import React, { useState } from "react";
 import Navbar from "./component/Navbar";
 import People from "./component/People";
 import Planets from "./component/Planets";
+import SearchBar from "./component/searchBar";
 
 function App() {
   const [page, setPage] = useState("planets");
+  const [search, setSearch] = useState("");
+  const [input, setInput] = useState({
+    buscar: "",
+  });
+
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleClick = (e) => {
+    e.target.value = "";
+    handleChange(e);
+  };
+
   return (
     <div className="App">
       <h1>StarWars info</h1>
-      <Navbar setPage={setPage} />
+      <Navbar setPage={setPage} setSearch={setSearch} />
       <div className="content">
-        {page === "planets" ? <Planets /> : <People />}
+        <SearchBar
+          handleChange={handleChange}
+          handleClick={handleClick}
+          search={search}
+        />
+        {page === "planets" ? (
+          <Planets planeta={search} />
+        ) : (
+          <People persona={search} />
+        )}
       </div>
     </div>
   );

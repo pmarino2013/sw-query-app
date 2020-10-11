@@ -1,10 +1,24 @@
 import React from "react";
 
-export default function Navbar({ setPage }) {
+export default function Navbar({ setPage, setSearch }) {
   return (
     <nav>
-      <button onClick={() => setPage("planets")}>Planets</button>
-      <button onClick={() => setPage("people")}>People</button>
+      <button
+        onClick={() => {
+          setPage("planets");
+          setSearch("");
+        }}
+      >
+        Planets
+      </button>
+      <button
+        onClick={() => {
+          setPage("people");
+          setSearch("");
+        }}
+      >
+        People
+      </button>
     </nav>
   );
 }

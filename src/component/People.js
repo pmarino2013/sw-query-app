@@ -5,19 +5,21 @@ import { usePaginatedQuery } from "react-query";
 
 import Person from "./Person";
 
-export const fetchPeople = async (key, page) => {
-  const res = await fetch(`http://swapi.dev/api/${key}/?page=${page}`);
+export const fetchPeople = async (key, page, persona) => {
+  const res = await fetch(
+    `http://swapi.dev/api/${key}/?page=${page}&&search=${persona}`
+  );
   return res.json();
 };
 
-export default function People() {
+export default function People({ persona }) {
   const [page, setPage] = useState(1);
   //useQuery
   //const recibe la data y el estado(loading, success o error)
   //useQuery recibe
   //   const { data, status } = useQuery("people", fetchPeople);
   const { resolvedData, latestData, status } = usePaginatedQuery(
-    ["people", page],
+    ["people", page, persona],
     fetchPeople
   );
 
