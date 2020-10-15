@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+// import SearchContext from "./SearchContext";
 //import { useQuery } from "react-query"; //llamo libreria React Query
 import { usePaginatedQuery } from "react-query"; //llamo libreria React Query
 import { ReactQueryDevtools } from "react-query-devtools";
 // import { fetchPlanets } from "../helpers/FetchPlanets";
 import Planet from "./Planet";
 
-export const fetchPlanets = async (key, page, planeta) => {
+const fetchPlanets = async (key, page, planeta) => {
   const res = await fetch(
     `http://swapi.dev/api/${key}/?page=${page}&&search=${planeta}`
   );
@@ -14,19 +15,30 @@ export const fetchPlanets = async (key, page, planeta) => {
 
 export default function Planets({ planeta }) {
   const [page, setPage] = useState(1); //creo state para manejar las paginas
-
+  // const { setBarView } = useContext(SearchContext);
   //useQuery
   //const recibe la data y el estado(loading, success o error)
   //useQuery recibe
   //   const { data, status } = useQuery(["planets", page], fetchPlanets, {
+
   const { resolvedData, latestData, status } = usePaginatedQuery(
     ["planets", page, planeta],
     fetchPlanets,
     {
       staleTime: 0,
-      onSuccess: () => console.log("data cargada"), //se ejecuta cuando status es success
+      // onSuccess: () => {
+      //   console.log(resolvedData);
+      //   console.log(planeta);
+      // }, //se ejecuta cuando status es success
     }
   );
+
+  useEffect(() => {
+    fetchPlanets("planets", page, planeta);
+    console.log(resolvedData);
+    console.log(page);
+    console.log("Search:" + planeta);
+  }, [planeta]);
 
   return (
     <div>
@@ -39,7 +51,10 @@ export default function Planets({ planeta }) {
       {status === "success" && (
         <>
           <button
-            onClick={() => setPage((old) => Math.max(old - 1, 1))}
+            onClick={() => {
+              setPage((old) => Math.max(old - 1, 1));
+              // console.log(page);
+            }}
             disabled={page === 1}
           >
             Previous page

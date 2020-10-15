@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// import SearchContext from "./SearchContext";
 // import { useQuery } from "react-query"; //llamo libreria React Query
 import { usePaginatedQuery } from "react-query";
 // import Planet from "./Planet";
@@ -14,13 +15,19 @@ export const fetchPeople = async (key, page, persona) => {
 
 export default function People({ persona }) {
   const [page, setPage] = useState(1);
+
+  // const { setBarView } = useContext(SearchContext);
   //useQuery
   //const recibe la data y el estado(loading, success o error)
   //useQuery recibe
   //   const { data, status } = useQuery("people", fetchPeople);
   const { resolvedData, latestData, status } = usePaginatedQuery(
     ["people", page, persona],
-    fetchPeople
+    fetchPeople,
+    {
+      staleTime: 0,
+      // onSuccess: () => setBarView(true), //se ejecuta cuando status es success
+    }
   );
 
   return (

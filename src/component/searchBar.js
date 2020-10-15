@@ -9,6 +9,7 @@ export default function SearchBar({ handleChange, handleClick, search }) {
         onClick={handleClick}
         name="buscar"
         value={search}
+        autoComplete="off"
       />
     </div>
   );

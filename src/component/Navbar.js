@@ -1,12 +1,15 @@
 import React from "react";
+// import SearchContext from "./SearchContext";
 
 export default function Navbar({ setPage, setSearch }) {
+  // const { setBarView } = useContext(SearchContext);
   return (
     <nav>
       <button
         onClick={() => {
           setPage("planets");
           setSearch("");
+          // setBarView(false);
         }}
       >
         Planets
@@ -15,6 +18,7 @@ export default function Navbar({ setPage, setSearch }) {
         onClick={() => {
           setPage("people");
           setSearch("");
+          // setBarView(false);
         }}
       >
         People
