@@ -6,23 +6,29 @@ import { usePaginatedQuery } from "react-query";
 
 import Person from "./Person";
 
-export const fetchPeople = async (key, page, persona) => {
+export const fetchPeople = async (key, page, buscar) => {
   const res = await fetch(
-    `http://swapi.dev/api/${key}/?page=${page}&&search=${persona}`
+    `http://swapi.dev/api/${key}/?page=${page}&&search=${buscar}`
   );
   return res.json();
 };
 
 export default function People({ persona }) {
   const [page, setPage] = useState(1);
+  const [buscar, setBuscar] = useState("");
 
-  // const { setBarView } = useContext(SearchContext);
-  //useQuery
-  //const recibe la data y el estado(loading, success o error)
-  //useQuery recibe
-  //   const { data, status } = useQuery("people", fetchPeople);
+  const handleChange = (e) => {
+    setBuscar(e.target.value);
+  };
+
+  const limpiarCampo = (e) => {
+    e.target.value = "";
+    handleChange(e);
+    setPage(1);
+  };
+
   const { resolvedData, latestData, status } = usePaginatedQuery(
-    ["people", page, persona],
+    ["people", page, buscar],
     fetchPeople,
     {
       staleTime: 0,
@@ -33,6 +39,7 @@ export default function People({ persona }) {
   return (
     <div>
       <h2>People</h2>
+      <input type="text" onChange={handleChange} onClick={limpiarCampo} />
       {status === "success" && (
         <>
           <button
