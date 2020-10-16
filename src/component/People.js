@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-// import SearchContext from "./SearchContext";
+import React, { useContext, useState } from "react";
+import SearchContext from "./SearchContext";
+
 // import { useQuery } from "react-query"; //llamo libreria React Query
 import { usePaginatedQuery } from "react-query";
-// import Planet from "./Planet";
 
 import Person from "./Person";
 
@@ -13,9 +13,10 @@ export const fetchPeople = async (key, page, buscar) => {
   return res.json();
 };
 
-export default function People({ persona }) {
+export default function People() {
   const [page, setPage] = useState(1);
-  const [buscar, setBuscar] = useState("");
+
+  const { buscar, setBuscar } = useContext(SearchContext);
 
   const handleChange = (e) => {
     setBuscar(e.target.value);
@@ -39,26 +40,28 @@ export default function People({ persona }) {
   return (
     <div>
       <h2>People</h2>
-      <input type="text" onChange={handleChange} onClick={limpiarCampo} />
       {status === "success" && (
         <>
-          <button
-            onClick={() => setPage((old) => Math.max(old - 1, 1))}
-            disabled={page === 1}
-          >
-            Previous page
-          </button>
-          <span>{page}</span>
-          <button
-            onClick={() =>
-              setPage((old) =>
-                !latestData || !latestData.next ? old : old + 1
-              )
-            }
-            disabled={!latestData || !latestData.next}
-          >
-            Next page
-          </button>
+          <div>
+            <input type="text" onChange={handleChange} onClick={limpiarCampo} />
+            <button
+              onClick={() => setPage((old) => Math.max(old - 1, 1))}
+              disabled={page === 1}
+            >
+              Previous page
+            </button>
+            <span className="card">{page}</span>
+            <button
+              onClick={() =>
+                setPage((old) =>
+                  !latestData || !latestData.next ? old : old + 1
+                )
+              }
+              disabled={!latestData || !latestData.next}
+            >
+              Next page
+            </button>
+          </div>
           <div>
             {resolvedData.results.map((person, i) => (
               <div key={i}>

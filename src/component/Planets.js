@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-// import SearchContext from "./SearchContext";
+import React, { useState, useContext } from "react";
+import SearchContext from "./SearchContext";
 //import { useQuery } from "react-query"; //llamo libreria React Query
 import { usePaginatedQuery } from "react-query"; //llamo libreria React Query
 import { ReactQueryDevtools } from "react-query-devtools";
@@ -7,21 +7,16 @@ import { ReactQueryDevtools } from "react-query-devtools";
 import Planet from "./Planet";
 
 export const fetchPlanets = async (key, page, buscar) => {
-  // if (planeta) {
-  //   const res = await fetch(`http://swapi.dev/api/${key}/?search=${planeta}`);
-
-  //   return res.json();
-  // } else {
   const res = await fetch(
     `http://swapi.dev/api/${key}/?page=${page}&&search=${buscar}`
   );
   return res.json();
 };
 
-export default function Planets({ search }) {
+export default function Planets() {
   const [page, setPage] = useState(1); //creo state para manejar las paginas
 
-  const [buscar, setBuscar] = useState("");
+  const { buscar, setBuscar } = useContext(SearchContext);
 
   const handleChange = (e) => {
     setBuscar(e.target.value);
@@ -38,23 +33,24 @@ export default function Planets({ search }) {
     fetchPlanets,
     {
       staleTime: 0,
-      onSuccess: () => console.log(resolvedData), //se ejecuta cuando status es success
+      onSuccess: () => console.log("Data cargada"), //se ejecuta cuando status es success
     }
   );
 
   return (
     <div>
       <h2> Planets </h2>
-      <input type="text" onChange={handleChange} onClick={limpiarCampo} />
+
       {status === "success" && (
         <>
+          <input type="text" onChange={handleChange} onClick={limpiarCampo} />
           <button
             onClick={() => setPage((old) => Math.max(old - 1, 1))}
             disabled={page === 1}
           >
             Previous page
           </button>
-          <span> {page} </span>
+          <span className="card"> {page} </span>
           <button
             onClick={() =>
               setPage((old) =>

@@ -1,7 +1,9 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background: #222;
+  background: url("./img/stars.svg"), #1b1b25;
+  background-repeat: repeat;
+
   color: #ddd;
   text-align: center;
 }
@@ -14,6 +16,7 @@ h1 {
   font-size: 4em;
   letter-spacing: 2px;
 }
+
 button {
   margin: 0 10px;
   background: transparent;
@@ -32,6 +35,7 @@ button:hover {
   text-align: left;
 }
 .card {
+  border: 1px solid #999;
   padding: 8px 16px;
   background: #1b1b1b;
   margin: 16px 0;
@@ -54,6 +58,7 @@ button:disabled {
   justify-content: center;
   margin-top: 20px;
 }
+
 input {
   margin: 0 10px;
   border: 3px solid #ccc;
